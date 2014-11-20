@@ -12,6 +12,12 @@ public class FrequentWordsTest
 {
 	String inputText = "ACGTTGCATGTCGCATGATGCATGAGAGCT";
 	Collection<String> expected = new ArrayList<>(Arrays.asList("CATG", "GCAT"));
+	Collection<String> expectedMismatch = new ArrayList<>(Arrays.asList("GATG",
+			"ATGC", "ATGT"));
+	Collection<String> expectedMismatchReverse = new ArrayList<>(Arrays.asList(
+			"ATGT", "ACAT"));
+	int k = 4;
+	int d = 1;
 
 	@Test
 	public void testSimple()
@@ -28,15 +34,28 @@ public class FrequentWordsTest
 	}
 
 	@Test
+	public void testMismatch()
+	{
+
+		Collection<String> actual = FrequentWords
+				.countMismatch(inputText, k, d);
+		assertTrue(Utils.collectionsEqual(expectedMismatch, actual));
+	}
+
+	@Test
 	public void testMismatchSorting()
 	{
-		String text = "ACGTTGCATGTCGCATGATGCATGAGAGCT";
-		int k = 4;
-		int d = 1;
-		Collection<String> expected = new ArrayList<>(Arrays.asList("GATG",
-				"ATGC", "ATGT"));
-		Collection<String> actual = FrequentWords.countMismatchSorting(text, k,
-				d);
-		assertTrue(Utils.collectionsEqual(expected, actual));
+		Collection<String> actual = FrequentWords.countMismatchSorting(
+				inputText, k, d);
+		assertTrue(Utils.collectionsEqual(expectedMismatch, actual));
+	}
+
+	@Test
+	public void testMismatchReverse()
+	{
+		Collection<String> actual = FrequentWords.countMismatchReverseSorting(
+				inputText, k, d);
+		System.out.println(Utils.collectionToString(actual));
+		assertTrue(Utils.collectionsEqual(expectedMismatchReverse, actual));
 	}
 }

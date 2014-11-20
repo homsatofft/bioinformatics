@@ -19,17 +19,17 @@ public class Converter
 		}
 	}
 
-	private static char codeToChar(char i)
+	private static char codeToChar(int i)
 	{
 		switch (i)
 		{
-		case '0':
+		case 0:
 			return 'A';
-		case '1':
+		case 1:
 			return 'C';
-		case '2':
+		case 2:
 			return 'G';
-		case '3':
+		case 3:
 			return 'T';
 		default:
 			throw new IllegalArgumentException("Illegal code: " + i);
@@ -38,33 +38,43 @@ public class Converter
 
 	public static long patternToNumber(String pattern)
 	{
-		long result = 0;
-		for (int i = 0; i < pattern.length(); i++)
-		{
-			result += charToCode(pattern.charAt(i))
-					* Math.pow(4, (pattern.length() - i - 1 ));
-		}
-		return result;
+		return patternToNumberRecursive(pattern, 0);
 	}
 
-	public static String numberToPattern(Long j, int length)
+	public static String numberToPattern(Long number, int length)
 	{
-		String num = Long.toString(j, 4);
-		StringBuilder sb = new StringBuilder();
-		for (char c : num.toCharArray())
+		return numberToPatternRecursive(number, length, new String());
+	}
+
+	private static String numberToPatternRecursive(long number, int length,
+			String acc)
+	{
+		if (length == 0)
 		{
-			sb.append(codeToChar(c));
+			return acc;
 		}
-		for (int i = sb.length(); i < length; i++)
+		long prefixNumber = number / 4;
+		int r = (int) (number % 4);
+		String nexAcc = new StringBuilder(acc).insert(0, codeToChar(r))
+				.toString();
+		return numberToPatternRecursive(prefixNumber, length - 1, nexAcc);
+	}
+
+	private static long patternToNumberRecursive(String pattern, long acc)
+	{
+		if (pattern.isEmpty())
 		{
-			sb.insert(0, 'A');
+			return acc;
 		}
-		// System.out.println(sb.toString());
-		return sb.toString();
+		char firstSymbol = pattern.charAt(0);
+		String nextPattern = pattern.substring(1);
+		long nextAcc = (long) (acc + Math.pow(4, pattern.length() - 1)
+				* charToCode(firstSymbol));
+		return patternToNumberRecursive(nextPattern, nextAcc);
 	}
 
 	public static void main(String[] args)
 	{
-		System.out.println(numberToPattern((long) 6580, 8));
+		System.out.println(numberToPattern((long) 912, 6));
 	}
 }

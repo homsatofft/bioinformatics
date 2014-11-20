@@ -15,5 +15,4 @@ public class ConverterTest
 		assertEquals("Wrong pattern to number conversion", 912, Converter.patternToNumber("ATGCAA"));
 		assertTrue("Wrong number to pattern conversion", Converter.numberToPattern((long) 912, 6).equals("ATGCAA"));
 	}
-
 }

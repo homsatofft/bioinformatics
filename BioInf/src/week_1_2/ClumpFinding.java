@@ -10,10 +10,6 @@ public class ClumpFinding
 	{
 		Set<Long> set = new HashSet<>();
 		Set<String> result = new HashSet<>();
-		int length = text.length() >= 1000 ? text.length() / 100 * 100 : text.length();
-		int divider = length / 10;
-		long t1 = System.currentTimeMillis();
-		long time = 0;
 		for (int i = 0; i < text.length() - L; i++)
 		{
 			String subString = text.substring(i, i + L);
@@ -21,14 +17,6 @@ public class ClumpFinding
 			for (Long j : set)
 			{
 				result.add(Converter.numberToPattern(j, k));
-			}
-			if (i % divider == 0)
-			{
-				long t2 = System.currentTimeMillis();
-				time +=  (t2 - t1) / 1000;
-				System.out.println("Passed: " + time);
-				t1 = t2;
-				System.out.println(i / divider * 10);
 			}
 		}
 		return result;

@@ -2,7 +2,7 @@ package week_1_2;
 
 public class PatternCount
 {
-	public static int count(String text, String pattern)
+	public int count(String text, String pattern)
 	{
 		int count = 0;
 		int tLen = text.length();
@@ -18,25 +18,20 @@ public class PatternCount
 		return count;
 	}
 
-	public static int countN(String text, String pattern, int hammingDistance)
+	public int countN(String text, String pattern, int hammingDistance)
 	{
+		Hamming h = new Hamming();
 		int count = 0;
 		int tLen = text.length();
 		int pLen = pattern.length();
 		for (int i = 0; i <= tLen - pLen; i++)
 		{
 			String current = text.substring(i, i + pLen);
-			if (Hamming.distance(pattern, current) <= hammingDistance)
+			if (h.distance(pattern, current) <= hammingDistance)
 			{
 				count++;
 			}
 		}
 		return count;
-	}
-	
-	public static void main(String[] args)
-	{
-		int k = countN("AACAAGCTGATAAACATTTAAAGAG", "AAAAA", 2);
-		System.out.println(k);
 	}
 }

@@ -6,30 +6,34 @@ import java.util.Set;
 
 public class ClumpFinding
 {
-	public static Collection<String> compute(String text, int k, int L, int t)
+	FrequencyArray fa = new FrequencyArray();
+
+	public Collection<String> compute(String text, int k, int L, int t)
 	{
-		Set<Long> set = new HashSet<>();
+		Converter c = new Converter();
+		Set<Integer> set = new HashSet<>();
 		Set<String> result = new HashSet<>();
 		for (int i = 0; i < text.length() - L; i++)
 		{
 			String subString = text.substring(i, i + L);
-			set = FrequencyArray.computeFrequencyFaster(subString, k, t);
-			for (Long j : set)
+			set = fa.computeFrequencyFaster(subString, k, t);
+			for (Integer j : set)
 			{
-				result.add(Converter.numberToPattern(j, k));
+				result.add(c.numberToPattern((long) j, k));
 			}
 		}
 		return result;
 	}
-	
-	public static Collection<String> computeFast(String genome, int k, int L, int t)
+
+	public Collection<String> computeFast(String genome, int k, int L, int t)
 	{
+		Converter c = new Converter();
 		Set<String> frequentPatterns = new HashSet<>();
 		String firstPattern, lastPattern;
 		long j;
 		boolean[] clump = new boolean[(int) Math.pow(4, k)];
 		String text = genome.substring(0, L);
-		int[] frequencyArray = FrequencyArray.computeFrequencyToArray(text, k);
+		int[] frequencyArray = fa.computeFrequencyToArray(text, k);
 		for (int i = 0; i < (int) Math.pow(4, k); i++)
 		{
 			if (frequencyArray[i] >= t)
@@ -40,10 +44,10 @@ public class ClumpFinding
 		for (int i = 1; i < genome.length() - L; i++)
 		{
 			firstPattern = genome.substring(i - 1, i - 1 + k);
-			j = Converter.patternToNumber(firstPattern);
+			j = c.patternToNumber(firstPattern);
 			frequencyArray[(int) j] -= 1;
 			lastPattern = genome.substring(i + L - k, i + L);
-			j = Converter.patternToNumber(lastPattern);
+			j = c.patternToNumber(lastPattern);
 			frequencyArray[(int) j] += 1;
 			if (frequencyArray[(int) j] >= t)
 			{
@@ -54,7 +58,7 @@ public class ClumpFinding
 		{
 			if (clump[(int) i])
 			{
-				frequentPatterns.add(Converter.numberToPattern(i, k));
+				frequentPatterns.add(c.numberToPattern(i, k));
 			}
 		}
 		return frequentPatterns;

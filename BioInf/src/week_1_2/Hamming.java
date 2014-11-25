@@ -2,7 +2,7 @@ package week_1_2;
 
 public class Hamming
 {
-	public static int distance(String stringOne, String stringTwo)
+	public int distance(String stringOne, String stringTwo)
 	{
 		int hamming = 0;
 		if (stringOne.length() != stringTwo.length())

@@ -12,7 +12,8 @@ public class ComplementReverseStrandTest
 	@Test
 	public void test()
 	{
-		assertTrue("ACCGGGTTTT".equals(ComplementReverseStrand.compute("AAAACCCGGT")));
+		ComplementReverseStrand crs = new ComplementReverseStrand();
+		assertTrue("ACCGGGTTTT".equals(crs.compute("AAAACCCGGT")));
 	}
 
 }

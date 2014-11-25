@@ -8,8 +8,11 @@ import java.util.Collection;
 
 import org.junit.Test;
 
+import utils.Utils;
+
 public class NeighborsTest
 {
+	Neighbors n = new Neighbors();
 	String pattern = "ACG";
 	Collection<String> expected = new ArrayList<>(Arrays.asList("CCG", "TCG",
 			"GCG", "AAG", "ATG", "AGG", "ACA", "ACC", "ACT", "ACG"));
@@ -17,21 +20,20 @@ public class NeighborsTest
 	@Test
 	public void testGenerate()
 	{
-		assertTrue(Utils.collectionsEqual(expected,
-				Neighbors.generate(pattern, 1)));
+		assertTrue(Utils.collectionsEqual(expected, n.generate(pattern, 1)));
 	}
 
 	@Test
 	public void testGenerateImmediate()
 	{
 		assertTrue(Utils.collectionsEqual(expected,
-				Neighbors.generateImmediate(pattern)));
+				n.generateImmediate(pattern)));
 	}
 
 	@Test
 	public void testGenerateIterative()
 	{
 		assertTrue(Utils.collectionsEqual(expected,
-				Neighbors.generateIterative(pattern, 1)));
+				n.generateIterative(pattern, 1)));
 	}
 }

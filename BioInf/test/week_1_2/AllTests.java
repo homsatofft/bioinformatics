@@ -6,11 +6,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses(
-{ ApproximatePatternMatchTest.class, ClumpFindingTest.class,
+{ ClumpFindingTest.class,
 		ComplementReverseStrandTest.class, ConverterTest.class,
 		FrequencyArrayTest.class, FrequentWordsTest.class, HammingTest.class,
-		NeighborsTest.class, PatternCountTest.class, PatternMatchingTest.class,
-		SkewTest.class, UtilsTest.class })
+		NeighborsTest.class, PatternCountTest.class,
+		SkewTest.class})
 public class AllTests
 {
 

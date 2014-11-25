@@ -9,6 +9,7 @@ public class Skew
 {
 	public static Collection<Integer> compute(String inputText)
 	{
+		System.out.println("Building skew...");
 		List<Integer> result = new ArrayList<>();
 		int counter = 0;
 		result.add(counter);
@@ -24,11 +25,13 @@ public class Skew
 			}
 			result.add(counter);
 		}
+		System.out.println("Building skew finished!");
 		return result;
 	}
 
 	public static Collection<Integer> computeMins(String inputText)
 	{
+		System.out.println("Finding skew minimums...");
 		List<Integer> result = new ArrayList<>();
 		List<Integer> list = (List<Integer>) compute(inputText);
 		int min = Collections.min(list);
@@ -39,6 +42,7 @@ public class Skew
 				result.add(i);
 			}
 		}
+		System.out.println("Finding skew minimums finished!");
 		return result;
 	}
 }

@@ -7,7 +7,9 @@ import java.util.Set;
 
 public class FrequencyArray
 {
-	public static List<Integer> computeFrequency(String text, int k)
+	Converter c = new Converter();
+	
+	public List<Integer> computeFrequency(String text, int k)
 	{
 		List<Integer> l = new ArrayList<>();
 		int[] arr = computeFrequencyToArray(text, k);
@@ -18,29 +20,29 @@ public class FrequencyArray
 		return l;
 	}
 
-	public static int[] computeFrequencyToArray(String text, int k)
+	public int[] computeFrequencyToArray(String text, int k)
 	{
 		int[] arr = new int[(int) Math.pow(4, k)];
 		for (int i = 0; i <= text.length() - k; i++)
 		{
-			long index = Converter.patternToNumber(text.substring(i, i + k));
+			long index = c.patternToNumber(text.substring(i, i + k));
 			arr[(int) index]++;
 		}
 		return arr;
 	}
 
-	public static Set<Long> computeFrequencyFaster(String text, int k,
+	public Set<Integer> computeFrequencyFaster(String text, int k,
 			int threshold)
 	{
-		Set<Long> set = new HashSet<>();
+		Set<Integer> set = new HashSet<>();
 		long[] arr = new long[(int) Math.pow(4, k)];
 		for (int i = 0; i <= text.length() - k; i++)
 		{
-			long index = Converter.patternToNumber(text.substring(i, i + k));
+			long index = c.patternToNumber(text.substring(i, i + k));
 			arr[(int) index]++;
 			if (arr[(int) index] == threshold)
 			{
-				set.add(index);
+				set.add((int) index);
 			}
 		}
 		return set;

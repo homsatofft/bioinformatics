@@ -6,12 +6,13 @@ import org.junit.Test;
 
 public class HammingTest
 {
+	Hamming h = new Hamming();
 
 	@Test
 	public void testDistance()
 	{
 		String one = "GGGCCGTTGGT";
 		String two = "GGACCGTTGAC";
-		assertEquals("Hamming calculated wrongly!", 3, Hamming.distance(one, two));
+		assertEquals("Hamming calculated wrongly!", 3, h.distance(one, two));
 	}
 }

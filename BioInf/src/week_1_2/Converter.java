@@ -2,7 +2,7 @@ package week_1_2;
 
 public class Converter
 {
-	private static int charToCode(char c)
+	private int charToCode(char c)
 	{
 		switch (Character.toLowerCase(c))
 		{
@@ -12,14 +12,14 @@ public class Converter
 			return 1;
 		case 'g':
 			return 2;
-		case 't':
+		case 't': case 'u':
 			return 3;
 		default:
 			throw new IllegalArgumentException("Illegal code: " + c);
 		}
 	}
 
-	private static char codeToChar(int i)
+	private char codeToChar(int i)
 	{
 		switch (i)
 		{
@@ -36,17 +36,17 @@ public class Converter
 		}
 	}
 
-	public static long patternToNumber(String pattern)
+	public long patternToNumber(String pattern)
 	{
 		return patternToNumberRecursive(pattern, 0);
 	}
 
-	public static String numberToPattern(Long number, int length)
+	public String numberToPattern(Long number, int length)
 	{
 		return numberToPatternRecursive(number, length, new String());
 	}
 
-	private static String numberToPatternRecursive(long number, int length,
+	private String numberToPatternRecursive(long number, int length,
 			String acc)
 	{
 		if (length == 0)
@@ -60,7 +60,7 @@ public class Converter
 		return numberToPatternRecursive(prefixNumber, length - 1, nexAcc);
 	}
 
-	private static long patternToNumberRecursive(String pattern, long acc)
+	private long patternToNumberRecursive(String pattern, long acc)
 	{
 		if (pattern.isEmpty())
 		{
@@ -75,6 +75,7 @@ public class Converter
 
 	public static void main(String[] args)
 	{
-		System.out.println(numberToPattern((long) 912, 6));
+		Converter c = new Converter();
+		System.out.println(c.numberToPattern((long) 912, 6));
 	}
 }

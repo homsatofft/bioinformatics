@@ -7,13 +7,14 @@ import java.util.HashSet;
 
 public class Neighbors
 {
-	private static Collection<String> nucleotides()
+	private Collection<String> nucleotides()
 	{
 		return Arrays.asList("A", "C", "G", "T");
 	}
 
-	public static Collection<String> generate(String pattern, int d)
+	public Collection<String> generate(String pattern, int d)
 	{
+		Hamming h = new Hamming();
 		Collection<String> neighborhood = new HashSet<>();
 		if (d == 0)
 		{
@@ -27,11 +28,11 @@ public class Neighbors
 		}
 		String firstSymbol = pattern.substring(0, 1);
 		String suffixPattern = pattern.substring(1);
-		Collection<String> suffixNeighbors = Neighbors.generate(suffixPattern,
+		Collection<String> suffixNeighbors = generate(suffixPattern,
 				d);
 		for (String text : suffixNeighbors)
 		{
-			if (Hamming.distance(suffixPattern, text) < d)
+			if (h.distance(suffixPattern, text) < d)
 			{
 				for (String nucleotide : nucleotides())
 				{
@@ -46,7 +47,7 @@ public class Neighbors
 		return neighborhood;
 	}
 
-	public static Collection<String> generateIterative(String pattern, int d)
+	public Collection<String> generateIterative(String pattern, int d)
 	{
 		Collection<String> neighborhood = new HashSet<>();
 		neighborhood.add(pattern);
@@ -61,7 +62,7 @@ public class Neighbors
 		return neighborhood;
 	}
 
-	public static Collection<String> generateImmediate(String pattern)
+	public Collection<String> generateImmediate(String pattern)
 	{
 		Collection<String> neighborhood = new HashSet<>();
 		neighborhood.add(pattern);

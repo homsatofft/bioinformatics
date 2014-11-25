@@ -1,10 +1,11 @@
-package week_1_2;
+package utils;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Utils
 {
@@ -16,6 +17,28 @@ public class Utils
 			return false;
 		}
 		return collTwo.containsAll(collOne);
+	}
+
+	public static <T> String collectionsEqualTotally(Collection<T> collOne,
+			Collection<T> collTwo)
+	{
+		List<T> listOne = new ArrayList<>(collOne);
+		List<T> listTwo = new ArrayList<>(collTwo);
+		String sizeDiffers = "Size differs: %d and %d";
+		String elementDiffer = "Different elements at %d: %s and %s";
+		if (listOne.size() != listTwo.size())
+		{
+			return String.format(sizeDiffers, listOne.size(), listTwo.size());
+		}
+		for (int i = 0; i < listOne.size(); i++)
+		{
+			if (!listOne.get(i).equals(listTwo.get(i)))
+			{
+				return String.format(elementDiffer, i, listOne.get(i),
+						listTwo.get(i));
+			}
+		}
+		return "Collections totally equal!";
 	}
 
 	public static <T> String collectionToString(Collection<T> arr)

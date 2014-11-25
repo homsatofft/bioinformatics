@@ -2,7 +2,7 @@ package week_1_2;
 
 public class ComplementReverseStrand
 {
-	private static char codeReverse(char c)
+	private char codeReverse(char c)
 	{
 		switch (Character.toLowerCase(c))
 		{
@@ -19,11 +19,11 @@ public class ComplementReverseStrand
 		}
 	}
 
-	public static String compute(String input)
+	public String compute(String input)
 	{
 		StringBuilder sb = new StringBuilder();
 		char[] arr = input.toCharArray();
-		for (int i = arr.length-1; i>=0; i--)
+		for (int i = arr.length - 1; i >= 0; i--)
 		{
 			sb.append(codeReverse(arr[i]));
 		}

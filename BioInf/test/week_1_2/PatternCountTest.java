@@ -6,13 +6,15 @@ import org.junit.Test;
 
 public class PatternCountTest
 {
+	
+	PatternCount pc = new PatternCount();
 
 	@Test
 	public void testCount()
 	{
 		String text = "GCGCG";
 		String pattern = "GCG";
-		assertEquals("Exact pattern count is wrong!", 2, PatternCount.count(text, pattern));
+		assertEquals("Exact pattern count is wrong!", 2, pc.count(text, pattern));
 	}
 
 	@Test
@@ -21,6 +23,6 @@ public class PatternCountTest
 		String text = "TTTAGAGCCTTCAGAGG";
 		String pattern = "GAGG";
 		int n = 2;
-		assertEquals("Approximate pattern count is wrong!", 4, PatternCount.countN(text, pattern, n));
+		assertEquals("Approximate pattern count is wrong!", 4, pc.countN(text, pattern, n));
 	}
 }

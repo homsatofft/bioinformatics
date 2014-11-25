@@ -10,15 +10,12 @@ import java.util.Set;
 
 public class FrequentWords
 {
+	PatternCount pc = new PatternCount();
+	Converter c = new Converter();
+	Neighbors n = new Neighbors();
+	ComplementReverseStrand crs = new ComplementReverseStrand();
 
-	private static int reverseIndex(int index, int k)
-	{
-		StringBuilder sb = new StringBuilder(Converter.numberToPattern(
-				(long) index, k));
-		return (int) Converter.patternToNumber(sb.reverse().toString());
-	}
-
-	private static int max(int[] arr)
+	private int max(int[] arr)
 	{
 		int maxCount = 0;
 		for (int i = 0; i < arr.length; i++)
@@ -31,7 +28,7 @@ public class FrequentWords
 		return maxCount;
 	}
 
-	public static Collection<String> count(String text, int k)
+	public Collection<String> count(String text, int k)
 	{
 		Set<String> result = new HashSet<String>();
 		ArrayList<Integer> count = new ArrayList<Integer>();
@@ -39,7 +36,7 @@ public class FrequentWords
 		for (int i = 0; i < text.length() - k; i++)
 		{
 			String pattern = text.substring(i, i + k);
-			count.add(PatternCount.count(text, pattern));
+			count.add(pc.count(text, pattern));
 		}
 		maxCount = Collections.max(count);
 		for (int i = 0; i < text.length() - k; i++)
@@ -52,7 +49,7 @@ public class FrequentWords
 		return result;
 	}
 
-	public static Collection<String> countSorting(String text, int k)
+	public Collection<String> countSorting(String text, int k)
 	{
 		Collection<String> frequentPatterns = new HashSet<>();
 		int l = text.length() - k;
@@ -63,7 +60,7 @@ public class FrequentWords
 		for (int i = 0; i < l; i++)
 		{
 			String pattern = text.substring(i, i + k);
-			index[i] = (Converter.patternToNumber(pattern));
+			index[i] = (c.patternToNumber(pattern));
 			count[i] = 1;
 		}
 		Arrays.sort(index);
@@ -83,13 +80,13 @@ public class FrequentWords
 		{
 			if (count[i] == maxCount)
 			{
-				frequentPatterns.add(Converter.numberToPattern(index[i], k));
+				frequentPatterns.add(c.numberToPattern(index[i], k));
 			}
 		}
 		return frequentPatterns;
 	}
 
-	public static Collection<String> countMismatch(String text, int k, int d)
+	public Collection<String> countMismatch(String text, int k, int d)
 	{
 		Collection<String> frequentPatterns = new HashSet<>();
 		int size = (int) Math.pow(4, k);
@@ -97,19 +94,19 @@ public class FrequentWords
 		int[] freqArray = new int[size];
 		for (int i = 0; i < text.length() - k; i++)
 		{
-			Collection<String> neighborhood = Neighbors.generate(
+			Collection<String> neighborhood = n.generate(
 					text.substring(i, i + k), d);
 			for (String string : neighborhood)
 			{
-				close[(int) Converter.patternToNumber(string)] = true;
+				close[(int) c.patternToNumber(string)] = true;
 			}
 		}
 		for (int i = 0; i < size; i++)
 		{
 			if (close[i])
 			{
-				String pattern = Converter.numberToPattern((long) i, k);
-				freqArray[i] = PatternCount.countN(text, pattern, d);
+				String pattern = c.numberToPattern((long) i, k);
+				freqArray[i] = pc.countN(text, pattern, d);
 			}
 		}
 		int maxCount = max(freqArray);
@@ -118,15 +115,14 @@ public class FrequentWords
 		{
 			if (freqArray[i] == maxCount)
 			{
-				String pattern = Converter.numberToPattern((long) i, k);
+				String pattern = c.numberToPattern((long) i, k);
 				frequentPatterns.add(pattern);
 			}
 		}
 		return frequentPatterns;
 	}
 
-	public static Collection<String> countMismatchSorting(String text, int k,
-			int d)
+	public Collection<String> countMismatchSorting(String text, int k, int d)
 	{
 
 		Set<String> frequentPatterns = new HashSet<>();
@@ -134,8 +130,7 @@ public class FrequentWords
 
 		for (int i = 0; i < text.length() - k; i++)
 		{
-			neighborhoods
-					.addAll(Neighbors.generate(text.substring(i, i + k), d));
+			neighborhoods.addAll(n.generate(text.substring(i, i + k), d));
 		}
 
 		Object[] neighborhoodArray;
@@ -149,7 +144,7 @@ public class FrequentWords
 		for (int i = 0; i < l; i++)
 		{
 			String pattern = (String) neighborhoodArray[i];
-			index[i] = Converter.patternToNumber(pattern);
+			index[i] = c.patternToNumber(pattern);
 			count[i] = 1;
 		}
 
@@ -171,25 +166,25 @@ public class FrequentWords
 		{
 			if (count[i] == maxCount)
 			{
-				frequentPatterns.add(Converter.numberToPattern(index[i], k));
+				frequentPatterns.add(c.numberToPattern(index[i], k));
 			}
 		}
 		return frequentPatterns;
 	}
 
-	public static Collection<String> countMismatchReverseSorting(String text,
-			int k, int d)
+	public Collection<String> countMismatchReverseSorting(String text, int k,
+			int d)
 	{
+		System.out.println("Started serch for most frequent " + k
+				+ "-mers with " + d + " mismatch and reverse complements");
 		Set<String> frequentPatterns = new HashSet<>();
 		List<String> neighborhoods = new ArrayList<>();
 
 		for (int i = 0; i < text.length() - k; i++)
 		{
-			neighborhoods
-					.addAll(Neighbors.generate(text.substring(i, i + k), d));
-			neighborhoods.addAll(Neighbors.generate(
-					ComplementReverseStrand.compute(text.substring(i, i + k)),
-					d));
+			neighborhoods.addAll(n.generate(text.substring(i, i + k), d));
+			neighborhoods.addAll(n.generate(
+					crs.compute(text.substring(i, i + k)), d));
 		}
 
 		Object[] neighborhoodArray;
@@ -203,7 +198,7 @@ public class FrequentWords
 		for (int i = 0; i < l; i++)
 		{
 			String pattern = (String) neighborhoodArray[i];
-			index[i] = Converter.patternToNumber(pattern);
+			index[i] = c.patternToNumber(pattern);
 			count[i] = 1;
 		}
 
@@ -225,9 +220,10 @@ public class FrequentWords
 		{
 			if (count[i] == maxCount)
 			{
-				frequentPatterns.add(Converter.numberToPattern(index[i], k));
+				frequentPatterns.add(c.numberToPattern(index[i], k));
 			}
 		}
+		System.out.println("Search finished!");
 		return frequentPatterns;
 	}
 

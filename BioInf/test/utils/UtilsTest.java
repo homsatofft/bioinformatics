@@ -1,4 +1,4 @@
-package week_1_2;
+package utils;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
+
+import utils.Utils;
 
 public class UtilsTest
 {

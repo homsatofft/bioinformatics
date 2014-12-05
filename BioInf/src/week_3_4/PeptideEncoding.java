@@ -15,7 +15,7 @@ public class PeptideEncoding
 	{
 		List<String> res = new ArrayList<String>();
 		int step = peptide.length() * CODON_LENGTH;
-		for (int i = 0; i < text.length() - step; i ++)
+		for (int i = 0; i <= text.length() - step; i ++)
 		{
 			String pattern = text.substring(i, i + step);
 			String reversePattern = crs.compute(pattern);

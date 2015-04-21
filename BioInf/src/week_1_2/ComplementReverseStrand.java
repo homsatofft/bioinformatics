@@ -29,4 +29,14 @@ public class ComplementReverseStrand
 		}
 		return sb.toString();
 	}
+	public static void main(String[] args)
+	{
+		if (args.length != 1)
+		{
+			return;
+		}
+		String text = args[0];
+		ComplementReverseStrand crs = new ComplementReverseStrand();
+		System.out.println(crs.compute(text));
+	}
 }

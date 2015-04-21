@@ -1,4 +1,4 @@
-package week_3_4;
+package oldCourse;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+
+import oldCourse.PeptideEncoding;
 
 import org.junit.Test;
 

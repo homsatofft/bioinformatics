@@ -34,4 +34,26 @@ public class PatternCount
 		}
 		return count;
 	}
+
+	public static void main(String[] args)
+	{
+		if (args.length != 3)
+		{
+			return;
+		}
+		String text = args[0];
+		String pattern = args[1];
+		int hammingDistance = 0;
+		try
+		{
+			hammingDistance = Integer.parseInt(args[2]);
+		}
+		catch (NumberFormatException e)
+		{
+			System.out.println(e);
+			return;
+		}
+		PatternCount c = new PatternCount();
+		System.out.println(c.countN(text, pattern, hammingDistance));
+	}
 }

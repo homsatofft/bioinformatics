@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
+import utils.Utils;
+
 public class Neighbors
 {
 	private Collection<String> nucleotides()
@@ -80,5 +82,28 @@ public class Neighbors
 			}
 		}
 		return neighborhood;
+	}
+	
+	public static void main(String[] args)
+	{
+		if (args.length != 2)
+		{
+			return;
+		}
+		String pattern = args[0];
+		int d = 0;
+		try
+		{
+			d = Integer.parseInt(args[1]);
+		}
+		catch (NumberFormatException e)
+		{
+			System.out.println(e);
+			return;
+		}
+		Neighbors n = new Neighbors();
+		Collection<String> nucleotides = n.generate(pattern, d);
+		System.out.println(nucleotides.size());
+		System.out.println(Utils.collectionToString(nucleotides));
 	}
 }

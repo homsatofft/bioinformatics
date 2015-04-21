@@ -23,4 +23,15 @@ public class Hamming
 		}
 		return hamming;
 	}
+	public static void main(String[] args)
+	{
+		if (args.length != 2)
+		{
+			return;
+		}
+		String text1 = args[0];
+		String text2 = args[1];
+		Hamming h = new Hamming();
+		System.out.println(h.distance(text1, text2));
+	}
 }

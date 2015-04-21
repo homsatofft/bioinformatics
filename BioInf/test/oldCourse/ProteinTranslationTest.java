@@ -1,6 +1,7 @@
-package week_3_4;
+package oldCourse;
 
 import static org.junit.Assert.*;
+import oldCourse.ProteinTranslation;
 
 import org.junit.Test;
 

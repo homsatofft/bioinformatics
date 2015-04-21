@@ -226,5 +226,28 @@ public class FrequentWords
 		System.out.println("Search finished!");
 		return frequentPatterns;
 	}
+	
+	public static void main(String[] args)
+	{
+		if (args.length != 3)
+		{
+			return;
+		}
+		String text = args[0];
+		int k = 0;
+		int d = 0;
+		try
+		{
+			k = Integer.parseInt(args[1]);
+			d = Integer.parseInt(args[2]);
+		}
+		catch (NumberFormatException e)
+		{
+			System.out.println(e);
+			return;
+		}
+		FrequentWords fw = new FrequentWords();
+		System.out.println(fw.countMismatch(text, k, d));
+	}
 
 }

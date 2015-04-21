@@ -1,4 +1,4 @@
-package week_3_4;
+package oldCourse;
 
 import utils.GeneticCode;
 

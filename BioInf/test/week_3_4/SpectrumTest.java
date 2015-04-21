@@ -1,5 +1,6 @@
 package week_3_4;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -34,12 +35,22 @@ public class SpectrumTest
 	}
 	
 	@Test
-	public void testConsistency(){
+	public void testConsistency()
+	{
 		List<Integer> spectrum = new ArrayList<>(Arrays.asList(0, 113, 114, 128, 129, 242, 242, 257, 370, 371, 484));
 		List<Integer> consistentSpectrum = new ArrayList<>(Arrays.asList(128, 129, 242, 242, 257));
 		List<Integer> inconsistentSpectrum = new ArrayList<>(Arrays.asList(0, 113, 113, 128, 129));
 		
 		assertTrue(s.isConsistent(consistentSpectrum, spectrum));
 		assertFalse(s.isConsistent(inconsistentSpectrum, spectrum));
+	}
+	
+	@Test
+	public void testScore()
+	{
+		String peptide = "NQEL";
+		List<Integer> spectrum = new ArrayList<>(Arrays.asList(0, 99, 113, 114, 128, 227, 257, 299, 355, 356, 370, 371, 484));
+		assertEquals(11, s.cyclicScore(peptide, spectrum));
+		assertEquals(8, s.linearScore(peptide, spectrum));
 	}
 }

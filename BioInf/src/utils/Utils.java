@@ -19,7 +19,7 @@ public class Utils
 		return collTwo.containsAll(collOne);
 	}
 
-	public static <T> boolean collectionsEqualTotally(Collection<T> collOne,
+	public static <T> String collectionsEqualTotally(Collection<T> collOne,
 			Collection<T> collTwo)
 	{
 		List<T> listOne = new ArrayList<>(collOne);
@@ -28,18 +28,17 @@ public class Utils
 		String elementDiffer = "Different elements at %d: %s and %s";
 		if (listOne.size() != listTwo.size())
 		{
-			return false;
-			// String.format(sizeDiffers, listOne.size(), listTwo.size());
+			return String.format(sizeDiffers, listOne.size(), listTwo.size());
 		}
 		for (int i = 0; i < listOne.size(); i++)
 		{
 			if (!listOne.get(i).equals(listTwo.get(i)))
 			{
-				return false;// String.format(elementDiffer, i, listOne.get(i),
-				// listTwo.get(i));
+				return  String.format(elementDiffer, i, listOne.get(i),
+				listTwo.get(i));
 			}
 		}
-		return true;// "Collections totally equal!";
+		return "Collections totally equal!";
 	}
 
 	public static <T> String collectionToString(Collection<T> arr)

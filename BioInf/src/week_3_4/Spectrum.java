@@ -2,7 +2,6 @@ package week_3_4;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import utils.GeneticCode;
@@ -97,7 +96,7 @@ public class Spectrum
 			return false;
 		}
 		int n = 1;
-		for (int i = 0; i < testedSpectrum.size(); i++)
+		for (int i = 0; i < testedSpectrum.size();)
 		{
 			int element = testedSpectrum.get(i);
 			while (i + n < testedSpectrum.size()
@@ -109,9 +108,45 @@ public class Spectrum
 			{
 				return false;
 			}
+			i += n;
 			n = 1;
 		}
 		return true;
+	}
+	
+	public int cyclicScore(String peptide, List<Integer> spectrum)
+	{
+		List<Integer> peptideSpectrum = generateCyclic(peptide);
+		return score(peptideSpectrum, spectrum);
+	}
+	
+	public int linearScore(String peptide, List<Integer> spectrum)
+	{
+		List<Integer> peptideSpectrum = generateLinear(peptide);
+		return score(peptideSpectrum, spectrum);
+	}
+
+	private int score(List<Integer> testedSpectrum, List<Integer> spectrum)
+	{
+		if (testedSpectrum.size() == 0)
+		{
+			return 0;
+		}
+		int score = 0;
+		int n = 1;
+		for (int i = 0; i < testedSpectrum.size();)
+		{
+			int element = testedSpectrum.get(i);
+			while (i + n < testedSpectrum.size()
+					&& element == testedSpectrum.get(i + n))
+			{
+				n++;
+			}
+			score += containsUpToN(spectrum, element, n);
+			i += n;
+			n = 1;
+		}
+		return score;
 	}
 
 	private boolean containsAtLeastN(List<Integer> collection, Integer element,
@@ -130,5 +165,22 @@ public class Spectrum
 			}
 		}
 		return k >= n;
+	}
+
+	private int containsUpToN(List<Integer> collection, Integer element, int n)
+	{
+		int k = 0;
+		for (Integer t : collection)
+		{
+			if (t.equals(element))
+			{
+				k++;
+			}
+			if (t > element)
+			{
+				break;
+			}
+		}
+		return k > n ? n : k;
 	}
 }

@@ -49,11 +49,9 @@ public class MotifEnumeration
 	public static void main(String[] args)
 	{
 		ParameterParser pp = new ParameterParser();
-		String[] paramsArray = {"-input", "-integers", "-inline", "k", "d", "-strings", "dnaStrings", "-end"};
-		String source = "data/dataset_156_7.txt";
 		try
 		{
-			pp.parseDataFile(source, paramsArray);
+			pp.parseDataFile(args);
 		}
 		catch (IOException e)
 		{

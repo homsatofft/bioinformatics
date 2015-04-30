@@ -13,11 +13,12 @@ public class ParameterParserTest
 	@Test
 	public void test()
 	{
-		String[] paramsArray = {"-input", "-integers", "-inline", "k", "d", "-strings", "dnaStrings", "-output", "-strings", "-inline", "result", "-end"};
-		String source = "data/motif_enumeration_data.txt";
+		String[] paramsArray = {"data/motif_enumeration_data.txt",
+				"-input", "-integers", "-inline", "k", "d", "-strings", "dnaStrings", 
+				"-output", "-strings", "-inline", "result", "-end"};
 		try
 		{
-			pp.parseDataFile(source, paramsArray);
+			pp.parseDataFile(paramsArray);
 		}
 		catch (IOException e)
 		{

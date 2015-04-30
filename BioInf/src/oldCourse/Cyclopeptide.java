@@ -1,6 +1,5 @@
 package oldCourse;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -129,8 +128,7 @@ public class Cyclopeptide
 			}
 		}
 
-		PriorityQueue<ScoredPeptide> q = new PriorityQueue<ScoredPeptide>(
-				new ScoredPeptideComparator());
+		PriorityQueue<ScoredPeptide> q = new PriorityQueue<>();
 		for (String peptide : leaderboard)
 		{
 			q.add(new ScoredPeptide(peptide, s.linearScore(peptide, spectrum)));

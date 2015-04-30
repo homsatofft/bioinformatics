@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ParameterParser
-{
+public class ParameterParser {
+
 	BufferedReader br;
 	Map<String, Parameter<Integer>> namedInputIntegers = new HashMap<>();
+	Map<String, Parameter<Integer>> namedOutputIntegers = new HashMap<>();
 	Map<String, Parameter<String>> namedInputStrings = new HashMap<>();
 	ParameterCollection<Integer> inputIntegers;
 	ParameterCollection<String> inputStrings;
@@ -32,23 +33,23 @@ public class ParameterParser
 	 * @return
 	 * @throws IOException
 	 */
-	public void parseDataFile(String source, String... parameters)
-			throws IOException
-	{
+	public void parseDataFile(String[] args) throws IOException {
+
+		String source = args[0];
+		String[] parameters = new String[args.length - 1];
+		for (int i = 1; i < args.length; i++) {
+			parameters[i - 1] = args[i];
+		}
 		List<String> namesCollection = new ArrayList<>();
 		br = new BufferedReader(new FileReader(source));
-		for (String parameter : parameters)
-		{
-			if (parameter.startsWith("-"))
-			{
-				if (canWrite)
-				{
+		for (String parameter : parameters) {
+			if (parameter.startsWith("-")) {
+				if (canWrite) {
 					processData(br, namesCollection);
 					namesCollection.clear();
 					canWrite = false;
 				}
-				switch (parameter)
-				{
+				switch (parameter) {
 				case Config.INPUT_STRING:
 					input = true;
 					break;
@@ -68,6 +69,8 @@ public class ParameterParser
 				case Config.OUTPUT_STRING:
 					input = false;
 					break;
+				case Config.END:
+					break;
 				default:
 					break;
 				}
@@ -80,66 +83,52 @@ public class ParameterParser
 	}
 
 	private void processData(BufferedReader br, List<String> namesCollection)
-			throws IOException
-	{
+			throws IOException {
+
 		String line;
 		line = br.readLine();
-		if (line == null)
-		{
+		if (line == null) {
 			return;
 		}
-		if (line.equalsIgnoreCase(Config.OUTPUT)
-				|| line.equalsIgnoreCase(Config.INPUT))
-		{
+		if (line.equalsIgnoreCase(Config.INPUT))
+				{
 			line = br.readLine();
 		}
-		if (inline)
-		{
-			if (integers)
-			{
+		if(line.equalsIgnoreCase(Config.OUTPUT)){
+			input = false;
+			line = br.readLine();
+		}
+		if (inline) {
+			if (integers) {
 				parseIntegersLine(line, namesCollection);
-			}
-			else if (strings)
-			{
+			} else if (strings) {
 				parseStringsLine(line, namesCollection);
 			}
-		}
-		else
-		{
-			while (true)
-			{
-				if (integers)
-				{
+		} else {
+			while (true) {
+				if (integers) {
 					parseIntegerLine(line, namesCollection);
-				}
-				else if (strings)
-				{
+				} else if (strings) {
 					parseStringLine(line, namesCollection);
 				}
 				line = br.readLine();
-				if (line == null || line.equalsIgnoreCase(Config.OUTPUT))
-				{
+				if (line == null || line.equalsIgnoreCase(Config.OUTPUT)) {
 					return;
 				}
 			}
 		}
 	}
 
-	private void parseStringLine(String line, List<String> namesCollection)
-	{
-		if (input)
-		{
-			if (inputStrings == null)
-			{
+	private void parseStringLine(String line, List<String> namesCollection) {
+
+		if (input) {
+			if (inputStrings == null) {
 				inputStrings = new ParameterCollection<String>(
 						namesCollection.get(0));
 			}
 			inputStrings.add(line);
-		}
-		else
-		{
-			if (outputStrings == null)
-			{
+		} else {
+			if (outputStrings == null) {
 				outputStrings = new ParameterCollection<String>(
 						namesCollection.get(0));
 			}
@@ -147,116 +136,98 @@ public class ParameterParser
 		}
 	}
 
-	private void parseIntegerLine(String line, List<String> namesCollection)
-	{
-		if (input)
-		{
-			if (inputIntegers == null)
-			{
+	private void parseIntegerLine(String line, List<String> namesCollection) {
+
+		if (input) {
+			if (inputIntegers == null) {
 				inputIntegers = new ParameterCollection<Integer>(
 						namesCollection.get(0));
 			}
 			int num = Integer.parseInt(line);
 			inputIntegers.add(num);
-		}
-		else
-		{
+		} else {
 			// TODO: add output collection
 		}
 	}
 
-	private void parseStringsLine(String line, List<String> namesCollection)
-	{
+	private void parseStringsLine(String line, List<String> namesCollection) {
+
 		String[] strings = line.split(" ");
-		if (strings.length == namesCollection.size())
-		{
-			for (int i = 0; i < strings.length; i++)
-			{
+		if (strings.length == namesCollection.size()) {
+			for (int i = 0; i < strings.length; i++) {
 				String str = strings[i];
 				String name = namesCollection.get(i);
-				if (input)
-				{
+				if (input) {
 
 					namedInputStrings.put(name,
 							new Parameter<String>(name, str));
-				}
-				else
-				{
+				} else {
 					// TODO: add output var here
 				}
 			}
-		}
-		else if (namesCollection.size() == 1)
-		{
-			if (input)
-			{
+		} else if (namesCollection.size() == 1) {
+			if (input) {
 				inputStrings = new ParameterCollection<String>(
 						namesCollection.get(0));
-				for (int i = 0; i < strings.length; i++)
-				{
+				for (int i = 0; i < strings.length; i++) {
 					inputStrings.add(strings[i]);
 				}
-			}
-			else
-			{
+			} else {
 				outputStrings = new ParameterCollection<String>(
 						namesCollection.get(0));
-				for (int i = 0; i < strings.length; i++)
-				{
+				for (int i = 0; i < strings.length; i++) {
 					outputStrings.add(strings[i]);
 				}
 			}
 		}
 	}
 
-	private void parseIntegersLine(String line, List<String> namesCollection)
-	{
+	private void parseIntegersLine(String line, List<String> namesCollection) {
+
 		String[] strings = line.split(" ");
-		if (strings.length == namesCollection.size())
-		{
-			for (int i = 0; i < strings.length; i++)
-			{
+		if (strings.length == namesCollection.size()) {
+			for (int i = 0; i < strings.length; i++) {
 				int num = Integer.parseInt(strings[i]);
 				String name = namesCollection.get(i);
-				if (input)
-				{
+				if (input) {
 					namedInputIntegers.put(name, new Parameter<Integer>(name,
 							num));
-				}
-				else
-				{
-					// TODO: add output param
+				} else {
+					namedOutputIntegers.put(name, new Parameter<Integer>(name,
+							num));
 				}
 			}
-		}
-		else if (namesCollection.size() == 1)
-		{
+		} else if (namesCollection.size() == 1) {
 			inputIntegers = new ParameterCollection<Integer>(
 					namesCollection.get(0));
-			for (int i = 0; i < strings.length; i++)
-			{
+			for (int i = 0; i < strings.length; i++) {
 				int num = Integer.parseInt(strings[i]);
-				if (input)
-				{
+				if (input) {
 					inputIntegers.add(num);
-				}
-				else
-				{
+				} else {
 					// TODO: add output param
 				}
 			}
 		}
 	}
-	
-	public int namedInteger(String name){
+
+	public int namedInteger(String name) {
+
 		return namedInputIntegers.get(name).value();
 	}
 	
-	public Collection<String> inputStrings(){
+	public String namedString(String name) {
+
+		return namedInputStrings.get(name).value();
+	}
+
+	public Collection<String> inputStrings() {
+
 		return inputStrings.values();
 	}
-	
-	public Collection<String> outputStrings(){
+
+	public Collection<String> outputStrings() {
+
 		return outputStrings.values();
 	}
 }

@@ -18,12 +18,14 @@ public class ParameterParser {
 	ParameterCollection<Integer> inputIntegers;
 	ParameterCollection<String> inputStrings;
 	ParameterCollection<String> outputStrings;
+	Parameter<double[][]> profile;
 
 	private boolean integers = false;
 	private boolean strings = false;
 	private boolean inline = false;
 	private boolean input = false;
 	private boolean canWrite = false;
+	private boolean profileDoubles;
 
 	/**
 	 * Returns a Parameters object with needed input and output data
@@ -34,7 +36,9 @@ public class ParameterParser {
 	 * @throws IOException
 	 */
 	public void parseDataFile(String[] args) throws IOException {
-
+		if(args.length==0){
+			throw new IllegalArgumentException("Please specify parameters!");
+		}
 		String source = args[0];
 		String[] parameters = new String[args.length - 1];
 		for (int i = 1; i < args.length; i++) {
@@ -56,11 +60,13 @@ public class ParameterParser {
 				case Config.INT_PARAM:
 					integers = true;
 					strings = false;
+					profileDoubles = false;
 					inline = false;
 					break;
 				case Config.STRING_PARAM:
 					strings = true;
 					integers = false;
+					profileDoubles = false;
 					inline = false;
 					break;
 				case Config.IN_LINE_PARAM:
@@ -69,6 +75,11 @@ public class ParameterParser {
 				case Config.OUTPUT_STRING:
 					input = false;
 					break;
+				case Config.PROFILE_PARAM:
+					strings = false;
+					integers = false;
+					profileDoubles = true;
+					inline = false;
 				case Config.END:
 					break;
 				default:
@@ -90,11 +101,10 @@ public class ParameterParser {
 		if (line == null) {
 			return;
 		}
-		if (line.equalsIgnoreCase(Config.INPUT))
-				{
+		if (line.equalsIgnoreCase(Config.INPUT)) {
 			line = br.readLine();
 		}
-		if(line.equalsIgnoreCase(Config.OUTPUT)){
+		if (line.equalsIgnoreCase(Config.OUTPUT)) {
 			input = false;
 			line = br.readLine();
 		}
@@ -110,12 +120,32 @@ public class ParameterParser {
 					parseIntegerLine(line, namesCollection);
 				} else if (strings) {
 					parseStringLine(line, namesCollection);
+				} else if (profileDoubles) {
+					parseDoublesLine(line, namesCollection, 0);
+					for (int i = 1; i < 4; i++) {
+						line = br.readLine();
+						parseDoublesLine(line, namesCollection, i);
+					}
 				}
 				line = br.readLine();
 				if (line == null || line.equalsIgnoreCase(Config.OUTPUT)) {
 					return;
 				}
 			}
+		}
+	}
+
+	private void parseDoublesLine(String line, List<String> namesCollection,
+			int lineCounter) {
+		String[] dStrings = line.split(" ");
+		if (profile == null) {
+			profile = new Parameter<double[][]>(namesCollection.get(0));
+			double[][] value = new double[4][dStrings.length];
+			profile.setValue(value);
+		}
+		for (int i = 0; i < dStrings.length; i++) {
+			double d = Double.parseDouble(dStrings[i]);
+			profile.value()[lineCounter][i] = d;
 		}
 	}
 
@@ -215,7 +245,7 @@ public class ParameterParser {
 
 		return namedInputIntegers.get(name).value();
 	}
-	
+
 	public String namedString(String name) {
 
 		return namedInputStrings.get(name).value();
@@ -229,5 +259,9 @@ public class ParameterParser {
 	public Collection<String> outputStrings() {
 
 		return outputStrings.values();
+	}
+
+	public double[][] profile() {
+		return profile.value();
 	}
 }

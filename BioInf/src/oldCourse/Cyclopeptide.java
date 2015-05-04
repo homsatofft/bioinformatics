@@ -128,7 +128,7 @@ public class Cyclopeptide
 			}
 		}
 
-		PriorityQueue<ScoredPeptide> q = new PriorityQueue<>();
+		PriorityQueue<ScoredPeptide> q = new PriorityQueue<>(new ScoredPeptideComparator());
 		for (String peptide : leaderboard)
 		{
 			q.add(new ScoredPeptide(peptide, s.linearScore(peptide, spectrum)));

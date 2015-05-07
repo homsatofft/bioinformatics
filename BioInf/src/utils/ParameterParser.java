@@ -101,10 +101,10 @@ public class ParameterParser {
 		if (line == null) {
 			return;
 		}
-		if (line.equalsIgnoreCase(Config.INPUT)) {
+		if (line.startsWith(Config.INPUT)) {
 			line = br.readLine();
 		}
-		if (line.equalsIgnoreCase(Config.OUTPUT)) {
+		if (line.startsWith(Config.OUTPUT)) {
 			input = false;
 			line = br.readLine();
 		}

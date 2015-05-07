@@ -5,39 +5,49 @@ import java.util.List;
 
 import utils.ParameterParser;
 
-public class Profile {
+public class Profile
+{
 	double[][] _profile;
 	private int _k;
 
-	public Profile(int k) {
+	public Profile(int k)
+	{
 		_k = k;
 		_profile = new double[4][_k];
 
 	}
 
-	public Profile(double[][] profile) {
+	public Profile(double[][] profile)
+	{
 		_profile = profile;
 		_k = _profile[0].length;
 	}
 
-	public Profile(List<String> dna) {
-		profileFromStrings(dna);
+	public Profile(List<String> dna, boolean usePseudocounts)
+	{
+		profileFromStrings(dna, usePseudocounts);
 	}
 
-	public void setRow(double[] row, int index) {
-		if (row.length != _k || index > 3) {
+	public void setRow(double[] row, int index)
+	{
+		if (row.length != _k || index > 3)
+		{
 			throw new IllegalArgumentException();
 		}
-		for (int i = 0; i < row.length; i++) {
+		for (int i = 0; i < row.length; i++)
+		{
 			_profile[index][i] = row[i];
 		}
 	}
 
-	private double probability(String pattern) {
+	double probability(String pattern)
+	{
 		double _prob = 1.0;
-		for (int j = 0; j < pattern.length(); j++) {
+		for (int j = 0; j < pattern.length(); j++)
+		{
 			char c = pattern.charAt(j);
-			switch (c) {
+			switch (c)
+			{
 			case 'A':
 				_prob *= _profile[0][j];
 				break;
@@ -58,16 +68,20 @@ public class Profile {
 		return _prob;
 	}
 
-	private void profileFromStrings(List<String> dna) {
+	private void profileFromStrings(List<String> dna, boolean usePseudocounts)
+	{
 		int k = dna.size();
 		int l = dna.get(0).length();
 		_k = l;
 		_profile = new double[4][l];
-		for (int i = 0; i < l; i++) {
+		for (int i = 0; i < l; i++)
+		{
 			double counterA = 0, counterC = 0, counterG = 0, counterT = 0;
-			for (int j = 0; j < k; j++) {
+			for (int j = 0; j < k; j++)
+			{
 				char c = dna.get(j).charAt(i);
-				switch (c) {
+				switch (c)
+				{
 				case 'A':
 				case 'a':
 					counterA++;
@@ -86,20 +100,32 @@ public class Profile {
 					break;
 				}
 			}
-			_profile[0][i] = counterA / k;
-			_profile[1][i] = counterC / k;
-			_profile[2][i] = counterG / k;
-			_profile[3][i] = counterT / k;
+			int divider = k;
+			if (usePseudocounts)
+			{
+				counterA++;
+				counterC++;
+				counterG++;
+				counterT++;
+				divider *= 2;
+			}
+			_profile[0][i] = counterA / divider;
+			_profile[1][i] = counterC / divider;
+			_profile[2][i] = counterG / divider;
+			_profile[3][i] = counterT / divider;
 		}
 	}
 
-	public String findPattern(String dna) {
-		String res = new String();
+	public String findPattern(String dna)
+	{
+		String res = dna.substring(0, _k);
 		double prob = 0.0;
-		for (int i = 0; i <= dna.length() - _k; i++) {
+		for (int i = 0; i <= dna.length() - _k; i++)
+		{
 			String pattern = dna.substring(i, i + _k).toUpperCase();
 			double _prob = probability(pattern);
-			if (_prob > prob) {
+			if (_prob > prob)
+			{
 				prob = _prob;
 				res = pattern;
 			}
@@ -107,9 +133,12 @@ public class Profile {
 		return res;
 	}
 
-	public void print() {
-		for (int i = 0; i < _profile.length; i++) {
-			for (int j = 0; j < _profile[i].length; j++) {
+	public void print()
+	{
+		for (int i = 0; i < _profile.length; i++)
+		{
+			for (int j = 0; j < _profile[i].length; j++)
+			{
 				System.out.print(_profile[i][j]);
 				System.out.print(' ');
 			}
@@ -117,11 +146,15 @@ public class Profile {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
 		ParameterParser pp = new ParameterParser();
-		try {
+		try
+		{
 			pp.parseDataFile(args);
-		} catch (IOException e) {
+		}
+		catch (IOException e)
+		{
 			System.out.println(e);
 			return;
 		}

@@ -24,11 +24,15 @@ public class GreedyMotifTest {
 				"CAAGGAGTTCGC",
 				"CACGTCAATCAC",
 				"CAATAATATTCG"));
-		List<String> output = new ArrayList<>(Arrays.asList("CAG", "CAG",
-				"CAA", "CAA", "CAA"));
-		Collection<String> result = gm.search(dna, k, t);
-		System.out.println(Utils.collectionToString(result));
+		List<String> output = new ArrayList<>(Arrays.asList("TTC", "ATC",
+				"TTC", "ATC", "TTC"));
+		Collection<String> result = gm.search(dna, k, t, true);
 		assertTrue(Utils.collectionsEqual(output, result));
+	}
+	
+	@Test
+	public void testSearchWithPseudocounts(){
+		
 	}
 
 	@Test

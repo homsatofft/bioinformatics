@@ -1,12 +1,16 @@
 package week_3_4;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import utils.ParameterParser;
+import utils.Utils;
+
 public class GreedyMotif {
-	public Collection<String> search(List<String> dna, int k, int t) {
+	public Collection<String> search(List<String> dna, int k, int t, boolean usePseudocounts) {
 		List<String> bestMotifs = new ArrayList<>();
 		for (String dnaString : dna) {
 			String motif = dnaString.substring(0, k);
@@ -18,11 +22,10 @@ public class GreedyMotif {
 			String _motif = line.substring(i, i + k);
 			_profileMotifs.add(_motif);
 			for (int j = 1; j < t; j++) {
-				Profile p = new Profile(_profileMotifs);
+				Profile p = new Profile(_profileMotifs, usePseudocounts);
 				String __motif = p.findPattern(dna.get(j));
 				_profileMotifs.add(__motif);
 			}
-			System.out.println(score(_profileMotifs));
 			if (score(_profileMotifs) < score(bestMotifs)) {
 				bestMotifs = _profileMotifs;
 			}
@@ -54,5 +57,22 @@ public class GreedyMotif {
 			score += motif.size() - _score;
 		}
 		return score;
+	}
+	
+	public static void main(String[] args)
+	{
+		ParameterParser pp = new ParameterParser();
+		try {
+			pp.parseDataFile(args);
+		} catch (IOException e) {
+			System.out.println(e);
+			return;
+		}
+		int k = pp.namedInteger("k");
+		int t = pp.namedInteger("t");
+		List<String> dnaStrings = new ArrayList<>(pp.inputStrings());
+		GreedyMotif gm = new GreedyMotif();
+		Collection<String> result = gm.search(dnaStrings, k, t, true);
+		System.out.println(Utils.collectionToLines(result));
 	}
 }

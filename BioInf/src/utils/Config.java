@@ -10,6 +10,6 @@ public class Config
 	public static final String PROFILE_PARAM = "-profile";
 	public static final String END = "-end";
 	
-	public static final String INPUT = "Input:";
-	public static final String OUTPUT = "Output:";
+	public static final String INPUT = "Input";
+	public static final String OUTPUT = "Output";
 }

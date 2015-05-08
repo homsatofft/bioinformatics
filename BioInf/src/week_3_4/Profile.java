@@ -1,6 +1,8 @@
 package week_3_4;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import utils.ParameterParser;
@@ -9,6 +11,7 @@ public class Profile
 {
 	double[][] _profile;
 	private int _k;
+	boolean _usePseudocounts = false;
 
 	public Profile(int k)
 	{
@@ -25,6 +28,7 @@ public class Profile
 
 	public Profile(List<String> dna, boolean usePseudocounts)
 	{
+		_usePseudocounts = usePseudocounts;
 		profileFromStrings(dna, usePseudocounts);
 	}
 
@@ -133,6 +137,16 @@ public class Profile
 		return res;
 	}
 
+	public List<String> motifs(Collection<String> dnaStrings)
+	{
+		List<String> result = new ArrayList<>();
+		for (String dna : dnaStrings)
+		{
+			result.add(findPattern(dna));
+		}
+		return result;
+	}
+
 	public void print()
 	{
 		for (int i = 0; i < _profile.length; i++)
@@ -144,6 +158,11 @@ public class Profile
 			}
 			System.out.println();
 		}
+	}
+
+	public boolean usesPseudocounts()
+	{
+		return _usePseudocounts;
 	}
 
 	public static void main(String[] args)

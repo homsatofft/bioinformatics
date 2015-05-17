@@ -60,7 +60,6 @@ public class MotifTest {
 		List<String> output = new ArrayList<>(Arrays.asList("TCTCGGGG", "CCAAGGTG",
 				"TACAGGCG", "TTCAGGTG", "TCCACGTG"));
 		Collection<String> result = m.searchRandom(dna, k, t, n);
-		System.out.println(Utils.collectionToLines(result));
 		assertTrue(Utils.collectionsEqual(output, result));
 	}
 
@@ -83,4 +82,18 @@ public class MotifTest {
 				expected == actual);
 	}
 
+	@Test
+	public void testGibbs(){
+		List<String> dnaStrings = new ArrayList<>(Arrays.asList(
+				"CGCCCCTCTCGGGGGTGTTCAGTAAACGGCCA", 
+				"GGGCGAGGTATGTGTAAGTGCCAAGGTGCCAG", 
+				"TAGTACCGAGACCGAAAGAAGTATACAGGCGT",
+				"TAGATCAAGTTTCAGGTGCACGTCGGTGAACC",
+				"AATCCACCAGCTCCACGTGCAATGTTGGCCTA"));
+		int k = 8, t = 5, n = 100;
+		List<String> output = new ArrayList<>(Arrays.asList("TCTCGGGG",
+				"CCAAGGTG", "TACAGGCG", "TTCAGGTG", "TCCACGTG"));
+		Collection<String> result = m.searchGibbsSampling(dnaStrings, k, t, n, 20);
+		assertTrue(Utils.collectionsEqual(output, result));
+	}
 }

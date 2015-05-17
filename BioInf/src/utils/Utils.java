@@ -14,7 +14,8 @@ public class Utils
 	{
 		if (collOne.size() != collTwo.size())
 		{
-			return false;
+			throw new IllegalArgumentException(String.format("Collection sise differ! Found %d instead of %d", collOne.size(), collTwo.size()));
+			//return false;
 		}
 		return collTwo.containsAll(collOne);
 	}
